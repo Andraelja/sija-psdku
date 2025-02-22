@@ -42,7 +42,7 @@
                                     <th>No.</th>
                                     <th>Nama</th>
                                     <th>NIDN</th>
-                                    <th>Mata Kuliah</th>
+                                    <th>Email</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -52,7 +52,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $d->nama }}</td>
                                         <td>{{ $d->nidn }}</td>
-                                        <td>{{ $d->mataKuliah->nama_matkul ?? 'Tidak Ada' }}</td>
+                                        <td>{{ $d->email }}</td>
                                         <td>
                                             <a href="{{ route('admin.dosen.edit', $d->id_dosen) }}" class="btn btn-warning btn-sm">Edit</a>
                                             <form action="{{ route('admin.dosen.destroy', $d->id_dosen) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?');">

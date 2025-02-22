@@ -1,6 +1,6 @@
 @extends('admin.layouts.template')
 
-@section('title', 'Tambah Dosen - Schoularium')
+@section('title', 'Tambah Dosen - SIJA-PSDKU')
 
 @section('content')
 
@@ -50,16 +50,11 @@
                                     <div class="invalid-feedback">Masukkan NIDN!</div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="id_matkul" class="form-label">Mata Kuliah</label>
-                                    <select name="id_matkul" id="id_matkul" class="form-control" required>
-                                        <option value="">-- Pilih Mata Kuliah --</option>
-                                        @foreach ($mataKuliah as $matkul)
-                                            <option value="{{ $matkul->id_matkul }}">{{ $matkul->nama_matkul }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" id="email">
+                                    <div class="invalid-feedback">Masukkan email!</div>
                                 </div>
-
 
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Tambahkan</button>

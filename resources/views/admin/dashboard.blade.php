@@ -25,20 +25,58 @@
             </nav>
         </div><!-- End Page Title -->
 
-        <div id='calendar'></div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Kalender Kegiatan</h5>
+                <div id="calendar"></div>
+            </div>
+        </div>
     </main><!-- End #main -->
 
-    @section('scripts')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var calendarEl = document.getElementById('calendar');
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth'
-                });
-                calendar.render();
+@section('scripts')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <style>
+        .pagetitle {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        /* Ukuran petak kalender */
+        .fc-daygrid-day {
+            min-height: 100px;
+            /* Tinggi petak kalender */
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                height: 600, // Tinggi kalender yang lebih proporsional
+                expandRows: true, // Membuat petak kalender tidak terlalu kecil
+                locale: 'id' // Setting bahasa Indonesia
             });
-        </script>
-    @endsection
+            calendar.render();
+        });
+    </script>
+@endsection
 @endsection

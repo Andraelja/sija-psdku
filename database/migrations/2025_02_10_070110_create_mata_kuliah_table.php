@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('id_matkul');
             $table->string('nama_matkul');
             $table->integer('sks');
+            $table->integer('id_dosen');
+            $table->year('angkatan');
             $table->timestamps();
         });
     }

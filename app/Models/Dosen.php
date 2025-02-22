@@ -8,15 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Dosen extends Model
 {
     use HasFactory;
-    
+
     protected $primaryKey = 'id_dosen';
     protected $table = 'dosen';
-    protected $fillable = ['nama', 'nidn', 'id_matkul'];
+    protected $fillable = ['nama', 'nidn', 'matkul', 'email', 'password'];
 
-    // Relasi ke MataKuliah
-    public function mataKuliah()
+    public function matkul()
     {
-        return $this->belongsTo(Matkul::class, 'id_matkul', 'id_matkul');
+        return $this->hasMany(Matkul::class, 'id_dosen', 'id_dosen');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'nidn', 'username');
+    }
+
+    public function userLogin()
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
+
+
+
 }
- 

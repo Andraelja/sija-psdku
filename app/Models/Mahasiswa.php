@@ -11,4 +11,9 @@ class Mahasiswa extends Model
     protected $table = 'mahasiswa';
     protected $primaryKey = 'id_mahasiswa';
     protected $fillable = ['nama', 'nim', 'angkatan'];
+
+    public function matkul()
+    {
+        return $this->belongsTo(Matkul::class, 'angkatan', 'angkatan');
+    }
 }

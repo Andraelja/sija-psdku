@@ -51,19 +51,6 @@
                                         value="{{ old('nidn', $dosen->nidn) }}">
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="id_matkul" class="form-label">Mata Kuliah</label>
-                                    <select name="id_matkul" id="id_matkul" class="form-control" required>
-                                        <option value="">-- Pilih Mata Kuliah --</option>
-                                        @foreach ($mataKuliah as $matkul)
-                                            <option value="{{ $matkul->id_matkul }}"
-                                                {{ $dosen->id_matkul == $matkul->id_matkul ? 'selected' : '' }}>
-                                                {{ $matkul->nama_matkul }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Simpan Perubahan</button>
                                 </div>
