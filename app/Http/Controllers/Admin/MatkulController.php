@@ -4,19 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Matkul;
+use Illuminate\Support\Facades\DB;
 
 class MatkulController extends Controller
 {
     public function index(Request $request)
     {
         $angkatan = $request->input('angkatan');
-        $angkatanList = \App\Models\Mahasiswa::select('angkatan')->distinct()->get();
+        $angkatanList = DB::table('mahasiswa')->select('angkatan')->distinct()->get();
 
-        $query = Matkul::with('dosen');
+        $query = DB::table('mata_kuliah')
+            ->leftJoin('dosen', 'mata_kuliah.id_dosen', '=', 'dosen.id_dosen')
+            ->select('mata_kuliah.*', 'dosen.nama as nama_dosen');
 
         if ($angkatan) {
-            $query->where('angkatan', $angkatan);
+            $query->where('mata_kuliah.angkatan', $angkatan);
         }
 
         $matkul = $query->get();
@@ -26,8 +28,8 @@ class MatkulController extends Controller
 
     public function create()
     {
-        $dosen = \App\Models\Dosen::all();
-        $angkatanList = \App\Models\Mahasiswa::select('angkatan')->distinct()->get();
+        $dosen = DB::table('dosen')->get();
+        $angkatanList = DB::table('mahasiswa')->select('angkatan')->distinct()->get();
         return view('admin.matkul.create', compact('dosen', 'angkatanList'));
     }
 
@@ -40,21 +42,27 @@ class MatkulController extends Controller
             'angkatan' => 'required|string',
         ]);
 
-        $matkul = Matkul::create([
+        DB::table('mata_kuliah')->insert([
             'nama_matkul' => $request->nama_matkul,
             'sks' => $request->sks,
             'id_dosen' => $request->id_dosen,
             'angkatan' => $request->angkatan,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->route('admin.matkul.index')->with('success', 'Mata Kuliah berhasil ditambahkan!');
     }
 
-
     public function edit($id)
     {
-        $matkul = Matkul::findOrFail($id);
-        $dosen = \App\Models\Dosen::all();
+        $matkul = DB::table('mata_kuliah')->where('id_matkul', $id)->first();
+        $dosen = DB::table('dosen')->get();
+
+        if (!$matkul) {
+            return redirect()->route('admin.matkul.index')->with('error', 'Mata Kuliah tidak ditemukan!');
+        }
+
         return view('admin.matkul.edit', compact('matkul', 'dosen'));
     }
 
@@ -66,20 +74,21 @@ class MatkulController extends Controller
             'id_dosen' => 'nullable|exists:dosen,id_dosen',
         ]);
 
-        $matkul = Matkul::findOrFail($id);
-        $matkul->update([
-            'nama_matkul' => $request->nama_matkul,
-            'sks' => $request->sks,
-            'id_dosen' => $request->id_dosen,
-        ]);
+        $updated = DB::table('mata_kuliah')
+            ->where('id_matkul', $id)
+            ->update([
+                'nama_matkul' => $request->nama_matkul,
+                'sks' => $request->sks,
+                'id_dosen' => $request->id_dosen,
+                'updated_at' => now(),
+            ]);
 
         return redirect()->route('admin.matkul.index')->with('success', 'Mata Kuliah berhasil diubah!');
     }
 
     public function destroy($id)
     {
-        $matkul = Matkul::findOrFail($id);
-        $matkul->delete();
+        $deleted = DB::table('mata_kuliah')->where('id_matkul', $id)->delete();
         return redirect()->route('admin.matkul.index')->with('success', 'Mata Kuliah berhasil dihapus!');
     }
 }

@@ -71,7 +71,7 @@
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td>{{ $m->nama_matkul }}</td>
                                                             <td>{{ $m->sks }}</td>
-                                                            <td>{{ $m->dosen ? $m->dosen->nama : '-' }}</td>
+                                                            <td>{{ $m->nama_dosen}}</td>
                                                             <td>
                                                                 <a href="{{ route('admin.matkul.edit', $m->id_matkul) }}"
                                                                     class="btn btn-warning btn-sm">Edit</a>
