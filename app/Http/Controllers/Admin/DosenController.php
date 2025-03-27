@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Dosen;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class DosenController extends Controller
 {
     public function index()
     {
-        $dosen = Dosen::all();
+        $dosen = DB::table('dosen')->get();
         return view('admin.dosen.index', compact('dosen'));
     }
 
@@ -24,49 +23,45 @@ class DosenController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validasiData = $request->validate([
             'nama' => 'required|string|max:255',
-            'nidn' => 'required|unique:dosen,nidn',
-            'email' => 'required|email|unique:dosen,email',
+            'nidn' => 'required|string|max:20|unique:dosen,nidn',
+            'email' => 'required|email|max:255|unique:dosen,email',
+            'password' => 'required'
         ]);
 
-        // Tambahkan data dosen
-        Dosen::create([
-            'nama' => $request->nama,
-            'nidn' => $request->nidn,
-            'email' => $request->email,
-            'password' => bcrypt('password'),
-        ]);
+        DB::table('dosen')->insert($validasiData);
 
-        User::create([
+        DB::table('users')->insert([
             'username' => $request->nidn,
             'password' => bcrypt('password'),
-            'role' => 'dosen',
+            'role' => 'dosen'
         ]);
 
-        return redirect()->route('admin.dosen.index')->with('success', 'Berhasil menambahkan dosen dan akun!');
+        return redirect()->route('admin.dosen.index')->with('success', 'Berhasil menambahkan dosen!');
     }
 
     public function edit($id)
     {
-        $dosen = Dosen::find($id);
+        $dosen = DB::table('dosen')->where('id_dosen', $id)->first();
         return view('admin.dosen.edit', compact('dosen'));
     }
 
     public function update(Request $request, string $id)
     {
-        $dosen = Dosen::find($id);
-        $dosen->update($request->all());
+        $validasiData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'nidn' => 'required|string|max:255',
+        ]);
+
+        DB::table('dosen')->where('id_dosen', $id)->update($validasiData);
 
         return redirect()->route('admin.dosen.index')->with('success', 'Berhasil memperbarui dosen!');
     }
 
     public function destroy(string $id)
     {
-        $dosen = Dosen::findOrFail($id);
-        $dosen->delete();
-
+        DB::table('dosen')->where('id_dosen', $id)->delete();
         return redirect()->route('admin.dosen.index')->with('success', 'Berhasil menghapus dosen!');
     }
-
 }

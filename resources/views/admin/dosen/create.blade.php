@@ -57,6 +57,12 @@
                                 </div>
 
                                 <div class="col-12">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" name="password" class="form-control" id="password">
+                                    <div class="invalid-feedback">Masukkan Password!</div>
+                                </div>
+
+                                <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Tambahkan</button>
                                 </div>
                             </form>
