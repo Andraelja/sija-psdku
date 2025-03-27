@@ -1,4 +1,4 @@
-@extends('admin.layouts.template')
+@extends('mahasiswa.layouts.template')
 
 @section('title', 'Daftar Mahasiswa - SIJA - PSDKU')
 
@@ -21,7 +21,7 @@
             <h1>Data Mahasiswa</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Daftar Mahasiswa</li>
                 </ol>
             </nav>
@@ -31,19 +31,19 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <a href="{{ route('admin.mahasiswa.create') }}" class="btn btn-primary" role="button">Tambah
-                                Data</a>
-                            <form action="{{ route('admin.mahasiswa.index') }}" method="GET">
-                                <select name="angkatan" class="form-select" onchange="this.form.submit()">
-                                    <option value="">-- Pilih Angkatan --</option>
-                                    @foreach ($angkatanList as $item)
-                                        <option value="{{ $item->angkatan }}"
-                                            {{ $angkatan == $item->angkatan ? 'selected' : '' }}>
-                                            {{ $item->angkatan }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                        <div class="card-header">
+                            <form action="{{ route('mahasiswa.mahasiswa.index') }}" method="GET">
+                                <div class="input-group">
+                                    <select name="angkatan" class="form-select" onchange="this.form.submit()">
+                                        <option value="">-- Pilih Angkatan --</option>
+                                        @foreach ($angkatanList as $item)
+                                            <option value="{{ $item->angkatan }}"
+                                                {{ $angkatan == $item->angkatan ? 'selected' : '' }}>
+                                                {{ $item->angkatan }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </form>
                         </div>
                         <div class="card-body">
@@ -56,7 +56,6 @@
                                             <th>Nama</th>
                                             <th>NIM</th>
                                             <th>Angkatan</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,24 +65,10 @@
                                                 <td>{{ $mhs->nama }}</td>
                                                 <td>{{ $mhs->nim }}</td>
                                                 <td>{{ $mhs->angkatan }}</td>
-                                                <td>
-                                                    <a href="{{ route('admin.mahasiswa.edit', $mhs->id_mahasiswa) }}"
-                                                        class="btn btn-warning btn-sm">Edit</a>
-                                                    <form
-                                                        action="{{ route('admin.mahasiswa.destroy', $mhs->id_mahasiswa) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus mahasiswa ini?')">
-                                                            Hapus
-                                                        </button>
-                                                    </form>
-                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="5" class="text-center">Tidak ada data mahasiswa untuk
+                                                <td colspan="4" class="text-center">Tidak ada data mahasiswa untuk
                                                     angkatan ini.</td>
                                             </tr>
                                         @endforelse
@@ -100,7 +85,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 
 @endsection

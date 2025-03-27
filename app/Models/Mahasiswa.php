@@ -16,4 +16,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Matkul::class, 'angkatan', 'angkatan');
     }
+
+    public function userLogin()
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
 }

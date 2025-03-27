@@ -1,6 +1,6 @@
-@extends('admin.layouts.template')
+@extends('mahasiswa.layouts.template')
 
-@section('title', 'Jadwal Kuliah - SIJA')
+@section('title', 'Jadwal Kuliah - Dosen')
 
 @section('content')
 
@@ -21,7 +21,7 @@
             <h1>Jadwal Kuliah</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('mahasiswa.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Jadwal Kuliah</li>
                 </ol>
             </nav>
@@ -34,11 +34,9 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">Pilih Angkatan</h5>
-                            <a href="{{ route('admin.jadwal.create') }}" class="btn btn-primary" role="button">Tambah
-                                Jadwal</a>
                         </div>
                         <div class="card-body">
-                            <form method="GET" action="{{ route('admin.jadwal.index') }}" class="row g-3">
+                            <form method="GET" action="{{ route('mahasiswa.jadwal.index') }}" class="row g-3">
                                 <div class="col-md-4">
                                     <label for="angkatan" class="form-label">Pilih Angkatan</label>
                                     <select name="angkatan" id="angkatan" class="form-select" required
@@ -65,11 +63,10 @@
                             <div class="card-body">
                                 @php
                                     $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
-                                    $jadwalByHari = $jadwal->groupBy('hari');
                                 @endphp
 
                                 @foreach ($hariList as $hari)
-                                    @if (isset($jadwalByHari[$hari]) && $jadwalByHari[$hari]->count() > 0)
+                                    @if (isset($jadwal[$hari]) && $jadwal[$hari]->count() > 0)
                                         <h4 class="mt-3">{{ $hari }}</h4>
                                         <div class="table-responsive">
                                             <table class="table table-striped datatable">
@@ -80,30 +77,16 @@
                                                         <th>Dosen Pengampu</th>
                                                         <th>Ruangan</th>
                                                         <th>Jam</th>
-                                                        <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($jadwalByHari[$hari]->sortBy('jam_mulai') as $key => $j)
+                                                    @foreach ($jadwal[$hari]->sortBy('jam_mulai') as $index => $j)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td>{{ $j->matkul->nama_matkul }}</td>
-                                                            <td>{{ $j->dosen->nama }}</td>
+                                                            <td>{{ $j->dosen->nama ?? '-' }}</td>
                                                             <td>{{ $j->ruangan }}</td>
                                                             <td>{{ $j->jam_mulai }} - {{ $j->jam_selesai }}</td>
-                                                            <td>
-                                                                <a href="{{ route('admin.jadwal.edit', $j->id_jadwal) }}"
-                                                                    class="btn btn-warning btn-sm" role="button">Edit</a>
-                                                                <form
-                                                                    action="{{ route('admin.jadwal.destroy', $j->id_jadwal) }}"
-                                                                    method="POST" class="d-inline"
-                                                                    onsubmit="return confirm('Yakin ingin menghapus?');">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger btn-sm">Hapus</button>
-                                                                </form>
-                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
@@ -112,8 +95,8 @@
                                     @endif
                                 @endforeach
 
-                                @if ($jadwal->isEmpty())
-                                    <p class="text-center mt-3">Tidak ada data jadwal kuliah untuk angkatan ini.</p>
+                                @if (empty($jadwal) || collect($jadwal)->flatten()->isEmpty())
+                                    <p class="text-center mt-3">Tidak ada jadwal kuliah untuk angkatan ini.</p>
                                 @endif
                             </div>
                         </div>

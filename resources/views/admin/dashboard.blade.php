@@ -59,10 +59,8 @@
             border-radius: 10px;
         }
 
-        /* Ukuran petak kalender */
         .fc-daygrid-day {
             min-height: 100px;
-            /* Tinggi petak kalender */
         }
     </style>
 
@@ -71,9 +69,9 @@
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                height: 600, // Tinggi kalender yang lebih proporsional
-                expandRows: true, // Membuat petak kalender tidak terlalu kecil
-                locale: 'id' // Setting bahasa Indonesia
+                height: 600, 
+                expandRows: true, 
+                locale: 'id' 
             });
             calendar.render();
         });

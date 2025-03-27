@@ -14,6 +14,9 @@ use App\Http\Controllers\Dosen\FormJadwalDosenController;
 use App\Http\Controllers\Dosen\FormJurnalDosenController;
 use App\Http\Controllers\Dosen\FormMahasiswaDosenController;
 use App\Http\Controllers\Dosen\FormMatkulDosenController;
+use App\Http\Controllers\Mahasiswa\FormJadwalMahasiswaController;
+use App\Http\Controllers\Mahasiswa\FormMahasiswaMahasiswaController;
+use App\Http\Controllers\Mahasiswa\FormMatkulMahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -134,6 +137,23 @@ Route::prefix('dosen')->middleware(['auth', 'role:dosen'])->group(function () {
         Route::get('/', [FormJurnalDosenController::class, 'index'])->name('dosen.jurnal.index');
         Route::get('/create', [FormJurnalDosenController::class, 'create'])->name('dosen.jurnal.create');
         Route::post('/', [FormJurnalDosenController::class, 'store'])->name('dosen.jurnal.store');
+    });
+});
+
+
+Route::prefix('mahasiswa')->middleware(['auth', 'role:mahasiswa'])->group(function () {
+    // Dashboard Mahasiswa
+    Route::get('/dashboard', [DashboardController::class, 'dashboardMahasiswa'])->name('mahasiswa.dashboard');
+    Route::prefix('mahasiswa')->group(function () {
+        Route::get('/', [FormMahasiswaMahasiswaController::class, 'index'])->name('mahasiswa.mahasiswa.index');
+    });
+
+    Route::prefix('matkul')->group(function () {
+        Route::get('/', [FormMatkulMahasiswaController::class, 'index'])->name('mahasiswa.matkul.index');
+    });
+
+    Route::prefix('jadwal')->group(function () {
+        Route::get('/', [FormJadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
     });
 });
 

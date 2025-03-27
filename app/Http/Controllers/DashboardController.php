@@ -22,4 +22,10 @@ class DashboardController extends Controller
         return view('dosen.dashboard', compact('dosen'));
     }
 
+    public function dashboardMahasiswa()
+    {
+        $mahasiswa = \App\Models\Mahasiswa::where('nim', auth()->user()->username)->first();
+        return view('mahasiswa.dashboard', compact('mahasiswa'));
+    }
+
 }

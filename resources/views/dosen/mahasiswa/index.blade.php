@@ -45,27 +45,33 @@
                             </form>
                         </div>
                         <div class="card-body">
-                            <!-- Table with stripped rows -->
-                            <table class="table table-striped datatable">
-                                <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Nama</th>
-                                        <th>NIM</th>
-                                        <th>Angkatan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($mahasiswa as $mhs)
+                            @if ($angkatan)
+                                <!-- Table with stripped rows -->
+                                <table class="table table-striped datatable">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $mhs->nama }}</td>
-                                            <td>{{ $mhs->nim }}</td>
-                                            <td>{{ $mhs->angkatan }}</td>
+                                            <th>No.</th>
+                                            <th>Nama</th>
+                                            <th>NIM</th>
+                                            <th>Angkatan</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($mahasiswa as $mhs)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $mhs->nama }}</td>
+                                                <td>{{ $mhs->nim }}</td>
+                                                <td>{{ $mhs->angkatan }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div class="alert alert-info mt-3" role="alert">
+                                    Silakan pilih angkatan terlebih dahulu untuk melihat data mahasiswa.
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
