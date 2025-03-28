@@ -3,36 +3,38 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dosen;
-use App\Models\JadwalKuliah;
-use App\Models\Matkul;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JadwalKuliahController extends Controller
 {
     public function index(Request $request)
     {
         $angkatan = $request->angkatan;
-        $matkulQuery = JadwalKuliah::with(['matkul', 'dosen']);
+        $matkulQuery = DB::table('jadwal_kuliah')
+            ->join('mata_kuliah', 'jadwal_kuliah.id_matkul', '=', 'mata_kuliah.id_matkul')
+            ->join('dosen', 'jadwal_kuliah.id_dosen', '=', 'dosen.id_dosen')
+            ->select(
+                'jadwal_kuliah.*',
+                'mata_kuliah.nama_matkul as matkul',
+                'dosen.nama'
+            );
 
         if ($angkatan) {
-            $matkulQuery->whereHas('matkul', function ($query) use ($angkatan) {
-                $query->where('angkatan', $angkatan);
-            });
+            $matkulQuery->where('mata_kuliah.angkatan', $angkatan);
         }
 
         $jadwal = $matkulQuery->get();
-        $listAngkatan = Matkul::distinct()->pluck('angkatan');
+        $listAngkatan = DB::table('mata_kuliah')->distinct()->pluck('angkatan');
 
         return view('admin.jadwal.index', compact('jadwal', 'listAngkatan', 'angkatan'));
     }
 
-
     public function create()
     {
-        $matkul = Matkul::all();
-        $dosen = Dosen::all();
-        $angkatanList = \App\Models\Mahasiswa::select('angkatan')->distinct()->get();
+        $matkul = DB::table('mata_kuliah')->get();
+        $dosen = DB::table('dosen')->get();
+        $angkatanList = DB::table('mahasiswa')->select('angkatan')->distinct()->get();
         return view('admin.jadwal.create', compact('matkul', 'dosen', 'angkatanList'));
     }
 
@@ -48,7 +50,7 @@ class JadwalKuliahController extends Controller
             'angkatan' => 'required|string|max:100',
         ]);
 
-        JadwalKuliah::create([
+        DB::table('jadwal_kuliah')->insert([
             'id_matkul' => $request->id_matkul,
             'id_dosen' => $request->id_dosen,
             'ruangan' => $request->ruangan,
@@ -63,26 +65,25 @@ class JadwalKuliahController extends Controller
 
     public function edit($id)
     {
-        $jadwal = JadwalKuliah::findOrFail($id);
-        $matkul = Matkul::all();
-        $dosen = Dosen::all();
+        $jadwal = DB::table('jadwal_kuliah')->where('id_jadwal', $id)->first();
+        $matkul = DB::table('mata_kuliah')->get();
+        $dosen = DB::table('dosen')->get();
 
         return view('admin.jadwal.edit', compact('jadwal', 'matkul', 'dosen'));
     }
 
-
     public function update(Request $request, $id)
     {
-        $jadwal = JadwalKuliah::findOrFail($id);
-
-        $updated = $jadwal->update([
-            'id_matkul' => $request->id_matkul,
-            'id_dosen' => $request->id_dosen,
-            'ruangan' => $request->ruangan,
-            'hari' => $request->hari,
-            'jam_mulai' => $request->jam_mulai,
-            'jam_selesai' => $request->jam_selesai,
-        ]);
+        $updated = DB::table('jadwal_kuliah')
+            ->where('id_jadwal', $id)
+            ->update([
+                'id_matkul' => $request->id_matkul,
+                'id_dosen' => $request->id_dosen,
+                'ruangan' => $request->ruangan,
+                'hari' => $request->hari,
+                'jam_mulai' => $request->jam_mulai,
+                'jam_selesai' => $request->jam_selesai,
+            ]);
 
         if ($updated) {
             return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal kuliah berhasil diubah!');
@@ -93,9 +94,7 @@ class JadwalKuliahController extends Controller
 
     public function destroy($id)
     {
-        $jadwal = JadwalKuliah::findOrFail($id);
-        $jadwal->delete();
+        DB::table('jadwal_kuliah')->where('id_jadwal', $id)->delete();
         return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal kuliah berhasil dihapus!');
     }
-
 }

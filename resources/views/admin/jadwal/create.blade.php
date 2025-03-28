@@ -90,7 +90,7 @@
                             </select>
                         </div>         
 
-                        <div class="col-12">
+                        <div class="col-12 mt-4">
                             <button type="submit" class="btn btn-primary ">Simpan</button>
                             <a href="{{ route('admin.jadwal.index') }}" class="btn btn-secondary">Batal</a>
                         </div>

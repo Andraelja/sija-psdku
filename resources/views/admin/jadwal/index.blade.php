@@ -87,8 +87,8 @@
                                                     @foreach ($jadwalByHari[$hari]->sortBy('jam_mulai') as $key => $j)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $j->matkul->nama_matkul }}</td>
-                                                            <td>{{ $j->dosen->nama }}</td>
+                                                            <td>{{ $j->matkul }}</td>
+                                                            <td>{{ $j->nama }}</td>
                                                             <td>{{ $j->ruangan }}</td>
                                                             <td>{{ $j->jam_mulai }} - {{ $j->jam_selesai }}</td>
                                                             <td>
