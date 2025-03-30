@@ -53,16 +53,14 @@
                                             <th>No.</th>
                                             <th>Nama Matkul</th>
                                             <th>SKS</th>
-                                            <th>Dosen Pengampu</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($matkul as $index => $m)
+                                        @foreach ($matkul as $m)
                                             <tr>
-                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $m->nama_matkul }}</td>
                                                 <td>{{ $m->sks }}</td>
-                                                <td>{{ $m->dosen ? $m->dosen->nama : '-' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
