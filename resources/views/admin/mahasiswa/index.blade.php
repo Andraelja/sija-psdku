@@ -55,7 +55,6 @@
                                             <th>No.</th>
                                             <th>Nama</th>
                                             <th>NIM</th>
-                                            <th>Angkatan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -65,7 +64,6 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $mhs->nama }}</td>
                                                 <td>{{ $mhs->nim }}</td>
-                                                <td>{{ $mhs->angkatan }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.mahasiswa.edit', $mhs->id_mahasiswa) }}"
                                                         class="btn btn-warning btn-sm">Edit</a>

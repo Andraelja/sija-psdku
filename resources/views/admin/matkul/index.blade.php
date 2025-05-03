@@ -53,7 +53,6 @@
 
                                 @if ($matkulByAngkatan->isNotEmpty())
                                     @foreach ($matkulByAngkatan as $angkatan => $matkulAngkatan)
-                                        <h3 class="mt-4">Angkatan {{ $angkatan }}</h3>
                                         <div class="table-responsive">
                                             <table class="table table-striped datatable">
                                                 <thead class="table-primary">

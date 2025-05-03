@@ -46,13 +46,6 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.jurnal.index') ? '' : 'collapsed' }}"
-                href="{{ route('admin.jurnal.index') }}">
-                <i class="bi bi-list-check"></i><span>Data Jurnal Perkuliahan</span>
-            </a>
-        </li>
-
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">

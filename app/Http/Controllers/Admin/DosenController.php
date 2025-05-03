@@ -20,17 +20,13 @@ class DosenController extends Controller
         return view('admin.dosen.create');
     }
 
-
     public function store(Request $request)
     {
-        $validasiData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'nidn' => 'required|string|max:20|unique:dosen,nidn',
-            'email' => 'required|email|max:255|unique:dosen,email',
-            'password' => 'required'
+        $dosen = DB::table('dosen')->insertGetId([
+            'nama' => $request->nama,
+            'nidn' => $request->nidn,
+            'email' => $request->email,
         ]);
-
-        DB::table('dosen')->insert($validasiData);
 
         DB::table('users')->insert([
             'username' => $request->nidn,
@@ -38,7 +34,7 @@ class DosenController extends Controller
             'role' => 'dosen'
         ]);
 
-        return redirect()->route('admin.dosen.index')->with('success', 'Berhasil menambahkan dosen!');
+        return redirect('admin/dosen/index/')->with("success", "Data Dosen Berhasil Ditambahkan!");
     }
 
     public function edit($id)

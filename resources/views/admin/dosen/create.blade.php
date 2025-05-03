@@ -36,7 +36,7 @@
                         <div class="card-body">
 
                             <form class="row g-3 needs-validation" action="{{ route('admin.dosen.store') }}" method="POST"
-                                enctype="multipart/form-data" novalidate>
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-12">
                                     <label for="nama" class="form-label">Nama</label>
@@ -58,8 +58,7 @@
 
                                 <div class="col-12">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control" id="password">
-                                    <div class="invalid-feedback">Masukkan Password!</div>
+                                    <input type="text" name="password" class="form-control" id="password" value="password" disabled>
                                 </div>
 
                                 <div class="col-12">

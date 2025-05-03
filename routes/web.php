@@ -91,19 +91,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
         Route::delete('/{id}', [AbsensiController::class, 'destroy'])->name('admin.absensi.destroy');
     });
 
-    Route::prefix('jurnal')->group(function () {
-        Route::get('/', [JurnalController::class, 'index'])->name('admin.jurnal.index');
-        Route::get('/create', [JurnalController::class, 'create'])->name('admin.jurnal.create');
-        Route::post('/', [JurnalController::class, 'store'])->name('admin.jurnal.store');
-        Route::get('/{id}/edit', [JurnalController::class, 'edit'])->name('admin.jurnal.edit');
-        Route::put('/{id}', [JurnalController::class, 'update'])->name('admin.jurnal.update');
-        Route::delete('/{id}', [JurnalController::class, 'destroy'])->name('admin.jurnal.destroy');
-    });
-
 });
 
 Route::get('/admin/jadwal/get-matkul/{angkatan}', [JadwalKuliahController::class, 'getMatkulByAngkatan']);
-
 
 //form dosen
 Route::prefix('dosen')->middleware(['auth', 'role:dosen'])->group(function () {
