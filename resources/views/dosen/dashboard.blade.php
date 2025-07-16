@@ -18,7 +18,7 @@
 
         <div class="pagetitle">
             <h1>Dashboard Dosen</h1>
-            <p>Selamat datang, <strong>{{ $dosen->nama }}</strong>!</p>
+            <p>Selamat datang, <strong>{{ Auth::user()->username }}</strong>!</p>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active">Dashboard</li>

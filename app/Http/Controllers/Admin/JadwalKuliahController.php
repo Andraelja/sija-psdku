@@ -30,12 +30,19 @@ class JadwalKuliahController extends Controller
         return view('admin.jadwal.index', compact('jadwal', 'listAngkatan', 'angkatan'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $matkul = DB::table('mata_kuliah')->get();
+        $selectedAngkatan = $request->input('angkatan');
+
+        $matkul = [];
+        if ($selectedAngkatan) {
+            $matkul = DB::table('mata_kuliah')
+                ->where('angkatan', $selectedAngkatan)
+                ->get();
+        }
         $dosen = DB::table('dosen')->get();
         $angkatanList = DB::table('mahasiswa')->select('angkatan')->distinct()->get();
-        return view('admin.jadwal.create', compact('matkul', 'dosen', 'angkatanList'));
+        return view('admin.jadwal.create', compact('matkul', 'dosen', 'angkatanList', 'selectedAngkatan'));
     }
 
     public function store(Request $request)

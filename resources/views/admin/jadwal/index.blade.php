@@ -3,8 +3,8 @@
 @section('title', 'Jadwal Kuliah - SIJA')
 
 @section('content')
-
     <main id="main" class="main">
+
         @if (session('success'))
             <div class="alert alert-success" role="alert">
                 {{ session('success') }}
@@ -30,12 +30,12 @@
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
-                    <!-- Pilih Angkatan -->
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Pilih Angkatan</h5>
-                            <a href="{{ route('admin.jadwal.create') }}" class="btn btn-primary" role="button">Tambah
-                                Jadwal</a>
+                            <h5 class="mb-0">Filter Jadwal</h5>
+                            <a href="{{ route('admin.jadwal.create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Tambah Jadwal
+                            </a>
                         </div>
                         <div class="card-body">
                             <form method="GET" action="{{ route('admin.jadwal.index') }}" class="row g-3">
@@ -56,7 +56,6 @@
                         </div>
                     </div>
 
-                    <!-- Tabel Jadwal Kuliah: Hanya muncul jika angkatan dipilih -->
                     @if (request('angkatan'))
                         <div class="card mt-4">
                             <div class="card-header bg-primary text-white">
@@ -70,38 +69,47 @@
 
                                 @foreach ($hariList as $hari)
                                     @if (isset($jadwalByHari[$hari]) && $jadwalByHari[$hari]->count() > 0)
-                                        <h4 class="mt-3">{{ $hari }}</h4>
+                                        <h5 class="mt-4">{{ $hari }}</h5>
                                         <div class="table-responsive">
-                                            <table class="table table-striped datatable">
+                                            <table class="table table-bordered table-hover align-middle text-center">
                                                 <thead class="table-primary">
                                                     <tr>
-                                                        <th>No.</th>
-                                                        <th>Nama Matkul</th>
-                                                        <th>Dosen Pengampu</th>
+                                                        <th>No</th>
+                                                        <th>Mata Kuliah</th>
+                                                        <th>Dosen</th>
                                                         <th>Ruangan</th>
                                                         <th>Jam</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($jadwalByHari[$hari]->sortBy('jam_mulai') as $key => $j)
+                                                    @foreach ($jadwalByHari[$hari]->sortBy('jam_mulai') as $j)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td>{{ $j->matkul }}</td>
                                                             <td>{{ $j->nama }}</td>
                                                             <td>{{ $j->ruangan }}</td>
-                                                            <td>{{ $j->jam_mulai }} - {{ $j->jam_selesai }}</td>
+                                                            <td>
+                                                                <span class="badge bg-info text-dark">
+                                                                    {{ \Carbon\Carbon::parse($j->jam_mulai)->format('H:i') }}
+                                                                    -
+                                                                    {{ \Carbon\Carbon::parse($j->jam_selesai)->format('H:i') }}
+                                                                </span>
+                                                            </td>
                                                             <td>
                                                                 <a href="{{ route('admin.jadwal.edit', $j->id_jadwal) }}"
-                                                                    class="btn btn-warning btn-sm" role="button">Edit</a>
+                                                                    class="btn btn-warning btn-sm">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                </a>
                                                                 <form
                                                                     action="{{ route('admin.jadwal.destroy', $j->id_jadwal) }}"
                                                                     method="POST" class="d-inline"
                                                                     onsubmit="return confirm('Yakin ingin menghapus?');">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger btn-sm">Hapus</button>
+                                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
                                                                 </form>
                                                             </td>
                                                         </tr>
@@ -113,7 +121,9 @@
                                 @endforeach
 
                                 @if ($jadwal->isEmpty())
-                                    <p class="text-center mt-3">Tidak ada data jadwal kuliah untuk angkatan ini.</p>
+                                    <div class="alert alert-info text-center mt-4">
+                                        Tidak ada jadwal kuliah untuk angkatan ini.
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -126,5 +136,4 @@
             </div>
         </section>
     </main>
-
 @endsection

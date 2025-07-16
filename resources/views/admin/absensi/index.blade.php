@@ -4,20 +4,32 @@
 
 @section('content')
     <main id="main" class="main">
-        <div class="pagetitle text-center py-3 bg-primary text-white rounded shadow-sm">
-            <h1 class="fw-bold text-white">Data Absensi Mahasiswa</h1>
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="pagetitle">
+            <h1>Data Absensi</h1>
             <nav>
-                <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" class="text-white">Dashboard</a></li>
-                    <li class="breadcrumb-item active text-white">Absensi</li>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Daftar Absensi</li>
                 </ol>
             </nav>
-        </div>
+        </div><!-- End Page Title -->
 
         <section class="section">
             <div class="container">
                 <div class="card shadow-lg border-0">
-                    <div class="card-body">
+                    <div class="card-body mt-2">
                         <form action="{{ route('admin.absensi.index') }}" method="GET" class="row g-3 align-items-end">
                             <div class="col-md-4">
                                 <label for="tanggal" class="form-label">Pilih Tanggal</label>
@@ -50,13 +62,13 @@
                 @endphp
 
                 <div class="card mt-4 shadow-lg border-0">
-                    <div class="card-header bg-primary text-white text-center py-3 rounded">
+                    {{-- <div class="card-header bg-primary text-white text-center py-3 rounded">
                         <h5 class="mb-0">Absensi Mahasiswa -
                             {{ \Carbon\Carbon::parse($tanggalFilter)->translatedFormat('l, d F Y') }} <br>
                             Angkatan {{ $angkatan }}
                         </h5>
-                    </div>
-                    <div class="card-body">
+                    </div> --}}
+                    <div class="card-body mt-2">
                         @if ($absensiByAngkatan->isEmpty())
                             <div class="alert alert-info text-center my-3" role="alert">
                                 Tidak ada data absensi untuk tanggal ini.
